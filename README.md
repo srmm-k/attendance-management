@@ -12,5 +12,5 @@ Laravel環境構築
 
 １：docker-compose exec php bash  
 ２：composer install  
-３：cp .env.example .envコマンドで.envを作成し、環境変数を変更
+３：cp .env.example .envコマンドで.envを作成し、環境変数を変更   
 ４：
