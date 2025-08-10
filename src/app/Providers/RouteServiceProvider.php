@@ -17,7 +17,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/attendance/create';//一般ユーザーは勤怠登録画面へリダイレクト
+
+    /**
+     * The path to the admin's "home" route.
+     *
+     * @var string
+     */
+    public const ADMIN_HOME = '/admin/attendance'; //管理者は勤怠一覧画面へリダイレクト
 
     /**
      * The controller namespace for the application.

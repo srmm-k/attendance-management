@@ -1,0 +1,94 @@
+.admin-requests-index__container {
+    width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-requests-index__heading {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+}
+
+.no-requests-message {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+.admin-requests-index__table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.admin-requests-index__table thead th {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #495057;
+}
+
+.admin-requests-index__table th,
+.admin-requests-index__table td {
+    padding: 15px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.admin-requests-index__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-requests-index__data {
+    color: #343a40;
+}
+
+.admin-requests-index__link {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-requests-index__link:hover {
+    background-color: #0056b3;
+}
+
+.admin-requests-index__pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* --- PC (1400px - 1540px) 向けの調整 --- */
+@media (min-width: 1400px) and (max-width:1540px) {
+    .admin-requests-index__container {
+        width: 85%;
+        padding: 25px;
+    }
+
+    .admin-requests-index__table th,
+    .admin-requests-index__table td {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* カラム幅の調整例 */
+    .admin-requests-index__table th:nth-child(1), .admin-requests-index__table td:nth-child(1) { width: 15%; } /* 申請者名 */
+    .admin-requests-index__table th:nth-child(2), .admin-requests-index__table td:nth-child(2) { width: 15%; } /* 対象日付 */
+    .admin-requests-index__table th:nth-child(3), .admin-requests-index__table td:nth-child(3) { width: 30%; } /* 申請理由 */
+    .admin-requests-index__table th:nth-child(4), .admin-requests-index__table td:nth-child(4) { width: 10%; } /* 状態 */
+    .admin-requests-index__table th:nth-child(5), .admin-requests-index__table td:nth-child(5) { width: 15%; } /* 申請日時 */
+    .admin-requests-index__table th:nth-child(6), .admin-requests-index__table td:nth-child(6) { width: 15%; } /* 詳細 */
+
+}

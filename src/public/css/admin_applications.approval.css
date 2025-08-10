@@ -1,0 +1,140 @@
+.admin-requests-show__container {
+    width: 60%;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-requests-show__heading {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+}
+
+.admin-requests-show__card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.admin-requests-show__item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.admin-requests-show__item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.admin-requests-show__label {
+    font-weight: bold;
+    color: #555;
+    flex-basis: 120px;/*ラベルの固定幅*/
+    min-width: 120px;
+    padding-right: 15px;
+}
+
+.admin-requests-show__data {
+    color: #333;
+    flex-grow: 1;
+}
+
+.admin-requests-show__reason-wrapper {
+    flex-grow: 1;
+}
+
+.admin-requests-show__reason-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    min-height: 100px;
+    resize: vertical;
+    font-size: 16px;
+    line-height: 1.5;
+    background-color: #f0f0f0;
+    cursor: default;
+}
+
+.admin-requests-show__action-form {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.admin-requests-show__button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-requests-show__button--approve {
+    background-color: #28a745;
+}
+
+.admin-requests-show__button--approve:hover {
+    background-color: #218838;
+}
+
+.admin-requests-show__button--reject {
+    background-color: #dc3545;
+}
+
+.admin-requests-show__button--reject:hover {
+    background-color: #c82333;
+}
+
+.admin-requests-show__status-message {
+    text-align: center;
+    color: #666;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+.admin-requests-show__back-link {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.admin-requests-show__back-link a {
+    color: #007bff;
+    text-decoration:none;
+    font-weight: bold;
+}
+
+.admin-requests-show__back-link a:hover {
+    text-decoration: underline;
+}
+
+/* --- PC (1400px - 1540px) 向けの調整 --- */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .admin-requests-show__container {
+        width: 65%;
+        padding: 25px;
+    }
+
+    .admin-requests-show__label {
+        flex-basis: 100px;
+        min-width: 100px;
+    }
+
+    .admin-requests-show__button {
+        padding: 8px 20px;
+        font-size: 15px;
+    }
+}

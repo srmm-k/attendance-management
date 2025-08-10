@@ -1,0 +1,139 @@
+.attendance-create__container {
+    width: 80%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.attendance-create__heading {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.attendance-create__card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-create__date {
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.attendance-create__form {
+    display: flex;
+    flex-wrap: wrap;
+    /* ボタンが複数行に並ぶように */
+    justify-content: center;
+    gap: 20px;
+    /* ボタン間のスペース */
+}
+
+.attendance-create__button {
+    flex: 1 1 45%;
+    /* 2列で並ぶように調整 */
+    max-width: 250px;
+    padding: 20px 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-create__button--checkin {
+    background-color: #007bff;
+    /* 青色 */
+}
+
+.attendance-create__button--checkin:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.attendance-create__button--break-in {
+    background-color: #ffc107;
+    /* 黄色 */
+    color: #333;
+}
+
+.attendance-create__button--break-in:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+}
+
+.attendance-create__button--break-out {
+    background-color: #28a745;
+    /* 緑色 */
+}
+
+.attendance-create__button--break-out:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.attendance-create__button--checkout {
+    background-color: #dc3545;
+    /* 赤色 */
+}
+
+.attendance-create__button--checkout:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.attendance-create__message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin-top: 20px;
+}
+
+/* --- PC (1400px - 1540px) 向けの調整 --- */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .attendance-create__container {
+        width: 70%;
+        /* 幅を調整 */
+        max-width: 700px;
+        /* 最大幅を調整 */
+        padding: 40px;
+    }
+
+    .attendance-create__button {
+        padding: 25px 0;
+        /* ボタンのパディングを調整 */
+        font-size: 24px;
+        /* フォントサイズを調整 */
+    }
+}

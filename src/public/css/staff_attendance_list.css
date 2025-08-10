@@ -1,0 +1,148 @@
+.staff-attendance-list__container {
+    width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.staff-attendance-list__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.staff-attendance-list__user-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    flex-grow: 1;
+}
+
+.staff-attendance-list__date-nav {
+    display: flex;
+    align-items: center;
+}
+
+.staff-attendance-list__nav-link {
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    padding: 0 10px;
+}
+
+.staff-attendance-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.staff-attendance-list__row {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.staff-attendance-list__row:last-child {
+    border-bottom: none;
+}
+
+.staff-attendance-list__label,
+.staff-attendance-list__data {
+    padding: 15px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.staff-attendance-list__label {
+    background-color: #e9ecef;
+    font-weight: bold;
+    color: #495057;
+}
+
+.staff-attendance-list__data {
+    color: #343a40;
+}
+
+.staff-attendance-list__link {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.staff-attendance-list__link:hover {
+    background-color: #218838;
+}
+
+.staff-attendance-list__pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.staff-attendance-list__footer {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.staff-attendance-list__csv-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.staff-attendance-list__csv-button:hover {
+    background-color: #5a6268;
+}
+
+/*--- PC (1400 - 1540px)向けの調整 --- */
+@media (min-width: 1400px) and (max-widht: 1540px) {
+    .staff-attendance-list__container {
+        /*コンテナの幅を少し広げるなど、この画面幅での最適な調整*/
+        width: 85%;
+        padding: 25px;
+    }
+
+    .staff-attendance-list__label,
+    .staff-attendance-list__data {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /*必要に応じて、各カラムの幅を調整 */
+    .staff-attendance-list__table th:nth-child(1), /*日付*/
+    .staff-attendance-list__table td:nth-child(1) {
+        width: 15%;
+    }
+
+    .staff-attendance-list__table th:nth-child(2), /*出勤*/
+    .staff-attendance-list__table td:nth-child(2) {
+        width: 15%;
+    }
+
+    .staff-attendance-list__table th:nth-child(3), /*退勤*/
+    .staff-attendance-list__table td:nth-child(3) {
+        width: 15%;
+    }
+
+    .staff-attendance-list__table th:nth-child(4), /*休憩*/
+    .staff-attendance-list__table td:nth-child(4) {
+        width: 15%;
+    }
+
+    .staff-attendance-list__table th:nth-child(5), /*合計*/
+    .staff-attendance-list__table td:nth-child(5) {
+        width: 15%;
+    }
+
+    .staff-attendance-list__table th:nth-child(6), /*詳細*/
+    .staff-attendance-list__table td:nth-child(6) {
+        width: 25%;
+    }
+}

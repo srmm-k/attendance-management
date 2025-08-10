@@ -1,0 +1,41 @@
+.header {
+    background: #000;
+}
+
+body {
+    margin: 0;
+}
+
+.header__inner {
+    position: fixed;
+    height: 80px;
+    background: #000;
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    padding-left: 8px;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.top-header__logo {
+    width: 250px;
+    height: auto;
+}
+
+main {
+    padding-top: 80px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-bottom: 50px;
+}
+
+/* PC画面 (1400px - 1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .top-header__logo {
+        width: 250px;
+    }
+}

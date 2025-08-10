@@ -1,0 +1,88 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login__heading {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+}
+
+.login-form {
+    width: 100%;
+    width: 600px;
+}
+
+.form__group {
+    margin-bottom: 50px;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form__group input[type="email"],
+.form__group input[type="password"],
+.login-button {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    appearance: none;
+}
+
+.form__group input[type="email"],
+.form__group input[type="password"] {
+    height: 45px;
+}
+
+.form__error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.login-button {
+    margin-top: 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    height: 45px;
+}
+
+.register-link-area {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.register-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+/* --- PC (1400px - 1540px) 向けの調整 --- */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .login__heading {
+        font-size: 32px;
+    }
+
+    .form__group input,
+    .login-button {
+        padding: 15px;
+        font-size: 18px;
+        height: 50px;
+    }
+}
