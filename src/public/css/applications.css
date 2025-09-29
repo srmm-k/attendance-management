@@ -1,0 +1,77 @@
+body {
+    background-color: #f0f2f5;
+}
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.application-list__heading {
+    font-size: 25px;
+    font-weight: bold;
+    color: #333;
+    border-left: solid 10px #333;
+    margin-bottom: 30px;
+    padding-left: 10px;
+}
+
+
+ul {
+    display: flex;
+    border-bottom: 1px solid #333;
+    margin-bottom: 30px;
+    list-style-type: none;
+}
+
+.nav-item {
+    margin: 0 15px;
+}
+
+.nav-link {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+thead {
+    border-bottom: 4px solid #ddd;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.table thead th {
+    font-weight: normal;
+    padding: 15px;
+    text-align: center;
+    border: none;
+    white-space: nowrap;
+}
+
+tr {
+    border-bottom: 2px solid #ddd;
+}
+
+
+.table tbody td {
+    padding: 15px;
+    text-align: center;
+}
+
+.table tbody td a.btn.btn-sm.btn-info {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+}

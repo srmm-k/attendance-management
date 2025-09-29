@@ -39,7 +39,7 @@
 .admin-requests-show__label {
     font-weight: bold;
     color: #555;
-    flex-basis: 120px;/*ラベルの固定幅*/
+    flex-basis: 120px;
     min-width: 120px;
     padding-right: 15px;
 }
@@ -119,22 +119,4 @@
 
 .admin-requests-show__back-link a:hover {
     text-decoration: underline;
-}
-
-/* --- PC (1400px - 1540px) 向けの調整 --- */
-@media (min-width: 1400px) and (max-width: 1540px) {
-    .admin-requests-show__container {
-        width: 65%;
-        padding: 25px;
-    }
-
-    .admin-requests-show__label {
-        flex-basis: 100px;
-        min-width: 100px;
-    }
-
-    .admin-requests-show__button {
-        padding: 8px 20px;
-        font-size: 15px;
-    }
 }

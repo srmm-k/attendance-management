@@ -1,0 +1,42 @@
+.verify__container {
+    width: 700px;
+    padding: 60px 20px;
+    margin: 60px auto;
+    text-align: center;
+    font-family: "Helvetica Neue", sans-serif;
+    width: 100%;
+}
+
+.verify__message {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.verify__button-group {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #dadadb;
+    border: 1px solid #333;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.verify__button-group a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.verify__resend-button {
+    padding: 12px 24px;
+    background: none;
+    color: #2563eb;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 30px;
+}

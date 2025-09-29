@@ -17,22 +17,26 @@
     <header class="header">
         <div class="header__inner">
             <div class="header-left">
-                <a href="/">
                     <img class="top-header__logo" src="{{ asset('img/logo.svg') }}" alt="ロゴ">
-                </a>
             </div>
             <nav>
                 <ul class="header-list">
                     @auth
                         @if(Auth::user()->is_admin)
                             <li class="header-item">
-                                <a href="{{ route('admin.attendances') }}" class="header-link">勤怠一覧</a>
+                                <a href="{{ route('admin.attendances.list') }}" class="header-link">勤怠一覧</a>
                             </li>
                             <li class="header-item">
                                 <a href="{{ route('admin.users') }}" class="header-link">スタッフ一覧</a>
                             </li>
                             <li class="header-item">
-                                <a href="{{ route('admin.requests') }}" class="header-link">申請一覧</a>
+                                <a href="{{ route('applications.index') }}" class="header-link">申請一覧</a>
+                            </li>
+                            <li class="header-item">
+                                <form method="POST" action="{{ route('admin.logout') }}">
+                                    @csrf
+                                    <button type="submit" class="header-link logout-button">ログアウト</button>
+                                </form>
                             </li>
                         @else
                             <li class="header-item">
@@ -42,15 +46,15 @@
                                 <a href="{{ route('attendance.list') }}" class="header-link">勤怠一覧</a>
                             </li>
                             <li class="header-item">
-                                <a href="{{ route('stamp_correction_request.list') }}" class="header-link">申請</a>
+                                <a href="{{ route('applications.index') }}" class="header-link">申請</a>
                             </li>
-                        @endif
                             <li class="header-item">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                         <button type="submit" class="header-link logout-button">ログアウト</button>
                                 </form>
                             </li>
+                        @endif
                     @endauth
                 </ul>
             </nav>

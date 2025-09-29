@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Application extends Model
 {
     use HasFactory;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -16,9 +16,14 @@ class Application extends Model
      */
     protected $fillable = [
         'user_id',
+        'attendance_id',
         'target_date',
         'reason',
         'status',
+    ];
+
+    protected $casts = [
+        'target_date' => 'date',
     ];
 
     /**
@@ -27,5 +32,10 @@ class Application extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class, 'attendance_id', 'id');
     }
 }

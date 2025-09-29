@@ -32,10 +32,3 @@ main {
     align-items: flex-start;
     padding-bottom: 50px;
 }
-
-/* PC画面 (1400px - 1540px) */
-@media (min-width: 1400px) and (max-width: 1540px) {
-    .top-header__logo {
-        width: 250px;
-    }
-}

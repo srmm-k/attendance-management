@@ -6,14 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance;
+use App\Models\BreakTime;
+use App\Models\Application;
+use App\Http\Requests\AttendanceRequest;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Throwable;
+use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 
 class AttendanceController extends Controller
 {
     /**
      * 勤怠登録画面を表示
-     * 
-     * @return \Illuminate\Http\Response
+     * * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -22,92 +27,121 @@ class AttendanceController extends Controller
             ->whereDate('date', Carbon::today())
             ->first();
 
+        if (empty($todayAttendance)) {
+            $todayAttendance = new Attendance();
+        }
+
         //勤怠登録画面を表示
         return view('users.attendances.create', compact('todayAttendance'));
     }
 
     /**
      * 勤怠登録（出勤・退勤・休憩）
-     * 
-     * @param \Illuminate\Http\Request $request
+     * * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+
         //今日の日付を取得
         $today = Carbon::today();
         $user = Auth::User();
 
+        if (!$user) {
+            return redirect()->back()->with('error', 'ユーザーが認証されていません。');
+        }
+
         //今日の勤怠記録を取得
-        $attendance = Attendance::firstOrNew([
-            'user_id' => $user->id,
-            'date' => $today,
-        ]);
+        $attendance = Attendance::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->with('breaks')
+            ->first();
 
         $message = '';
 
         //リクエストされたボタンに応じて処理を分岐
         if ($request->has('checkin')) {
             //出勤ボタンが押された場合
-            if (!$attendance->check_in_time) {
-                $attendance->check_in_time = Carbon::now();
+            if (!$attendance) { //勤怠レコードが存在しない場合は新規作成
+                $attendance = new Attendance();
+                $attendance->user_id = $user->id;
+                $attendance->date = $today;
+                $attendance->check_in_time = Carbon::now()->format('H:i:s');
+                $attendance->save();
                 $message = '出勤時間を記録しました。';
             } else {
-                return redirect()->back()->with('error', '既に出勤済みです。');
-            }
-        } elseif ($request->has('checout')) {
-            //退勤ボタンが押された場合
+                    return redirect()->back()->with('error', '既に出勤済みです。');
+                }
+        } elseif ($request->has('checkout')) {
+            //退勤ボタンが押された時
             if ($attendance->check_in_time && !$attendance->check_out_time) {
-                $attendance->check_out_time = Carbon::now();
+                //現在休憩中ではないことを確認
+                $latestBreak = $attendance->breaks->last();
+                if ($latestBreak && empty($latestBreak->break_out_time)) {
+                    return redirect()->back()->with('error', '休憩を終了してから退勤してください。');
+                }
+
+                $attendance->check_out_time = Carbon::now()->format('H:i:s');
                 $message = '退勤時間を記録しました。';
             } else {
                 return redirect()->back()->with('error', '未出勤または既に退勤済みです。');
             }
+
         } elseif ($request->has('break_in')) {
             //休憩入ボタンが押された場合
-            if ($attendance->check_in_time && !attendance->check_out_time) {
-                if (!$attendance->break_in_time_1) {
-                    $attendance->break_in_time_1 = Carbon::now();
-                    $message = '休憩を開始しました。';
-                } elseif ($attendance->break_out_time_1 && !$attendance->break_in_time_2) {
-                    //１回目の休憩が終了しており、２回目の休憩が開始されていない場合
-                    $attendance->break_in_time_2 = Carbon::now();
-                    $message = '２回目の休憩を開始しました。';
-                } else {
-                    return redirect()->back()->with('error', '既に休憩中、または休憩回数の上限です。');
+            if ($attendance->check_in_time && !$attendance->check_out_time) {
+                //すでに休憩中ではないことを確認
+                $latestBreak = $attendance->breaks->last();
+                if ($latestBreak && empty($latestBreak->break_out_time)) {
+                    return redirect()->back()->with('error', 'すでに休憩中です。');
                 }
+
+                //勤怠レコードが存在しない場合、休憩開始前に作成
+                if (!$attendance) {
+                    $attendance = new Attendance();
+                    $attendance->user_id = $user->id;
+                    $attendance->date = $today;
+                    $attendance->save();
+                }
+
+                $break = new BreakTime();
+                $break->attendance_id = $attendance->id;
+                $break->break_in_time = Carbon::now();
+                $break->save();
+                return redirect()->back()->with('status', '休憩を開始しました。');
             } else {
                 return redirect()->back()->with('error', '出勤していないか、既に退勤済みのため休憩できません。');
             }
         } elseif ($request->has('break_out')) {
             //休憩戻ボタンが押された場合
-            if ($attendance->break_in_time_2 && !$attendance->break_out_time_2) {
-                //２回目の休憩中
-                $attendance->break_out_time_2 = Carbon::now();
-                $message = '２回目の休憩を終了しました。';
-            } elseif ($attendance->break_in_time_1 && !$attendance->break_out_time_1) {
-                //１回目の休憩中
-                $attendance->break_out_time_1 = Carbon::now();
-                $message = '休憩を終了しました。';
+            if ($attendance->check_in_time && !$attendance->check_out_time) {
+                $latestBreak = $attendance->breaks->last();
+                if ($latestBreak && empty($latestBreak->break_out_time)) {
+                    $latestBreak->break_out_time = Carbon::now();
+                    $latestBreak->save();
+                    return redirect()->back()->with('status', '休憩を終了しました。');
             } else {
                 return redirect()->back()->with('error', '休憩を開始していません。');
             }
         } else {
+            return redirect()->back()->with('error', '出勤していないか、既に退勤済みです。');
+            }
+        } else {
             return redirect()->back()->with('error', '不正な操作です。');
-        }
+            }
 
         //各種時間の計算
         $breakTimeTotal = 0;
-        if ($attendance->break_in_time_1 && $attendance->break_out_time_1) {
-            $break1_in = Carbon::parse($attendance->break_in_time_1);
-            $break1_out = Carbon::parse($attendance->break_out_time_1);
-            $breakTimeTotal += $break1_in->diffInMinutes($break1_out);
-        }
-        if ($attendance->break_in_time_2 && $attendance->break_out_time_2) {
-            $break2_in = Carbon::parse($attendance->break_in_time_2);
-            $break2_out = Carbon::parse($attendance->break_out_time_2);
-            $breakTimeTotal += $break2_in->diffInMinutes($break2_out);
-        }
+        if ($attendance->breaks) {
+            foreach ($attendance->breaks as $breakTime) {
+                if ($breakTime->break_in_time && $breakTime->break_out_time) {
+                    $breakIn = Carbon::parse($breakTime->break_in_time);
+                    $breakOut = Carbon::parse($breakTime->break_out_time);
+                    $breakTimeTotal += $breakIn->diffInMinutes($breakOut);
+                    }
+                }
+            }
+
         $attendance->break_time = $breakTimeTotal; //合計休憩時間を更新
 
         $totalTime = 0;
@@ -118,7 +152,14 @@ class AttendanceController extends Controller
         }
         $attendance->total_time = $totalTime; //合計勤務時間を更新
 
-        $attendance->save();
+
+        try {
+
+            $attendance->save();
+
+        } catch (Throwable $e) {
+            return redirect()->back()->with('error', 'データの保存に失敗しました: ' . $e->getMessage());
+        }
 
         return redirect()->back()->with('status', $message);
         }
@@ -126,100 +167,202 @@ class AttendanceController extends Controller
 
     /**
      * 勤怠一覧画面を表示
-     * 
-     * @return \Illuminate\Http\Response
+     * * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //リクエストから年と月を取得。なければ現在の年月に設定
-        $year = $request->input('year', Carbon::now()->year);
-        $month = $request->input('month', Carbon::now()->month);
+        $year = $request->input('year') ?? now()->year;
+        $month = $request->input('month') ?? now()->month;
 
-        //指定された年月の最初の日と最後の日を取得
-        $startDate = Carbon::createFromDate($year, $month, 1)->startOfMonth();
-        $endDate = Carbon::createFromDate($year, $month, 1)->endOfMonth();
+        $startDate = Carbon::create($year, $month, 1)->startOfDay();
+        $endDate = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay();
 
-        //ログインユーザーの指定年月の勤怠記録を取得
-        $attendances = Attendance::where('user_id', Auth::id())
-        ->orderBy('date', 'desc')
-        ->paginate(15); //ページネーション
+        // その月の全ての日付を生成
+        $daysInMonth = CarbonPeriod::create($startDate, '1 day', $endDate);
 
-        //前月と翌月の情報を計算
-        $prevMonth = $startDate->copy()->subMonth();
-        $nextMonth = $startDate->copy()->addMonth();
+        // データベースから勤怠データを取得
+        $attendances = Attendance::whereBetween('date', [$startDate, $endDate])
+            ->where('user_id', Auth::id())
+            ->get();
 
-        return view('users.attendances.index', compact('attendances', 'year', 'month', 'prevMonth', 'nextMonth'));
+        // 日付をキーとして勤怠データを整理
+        $organizedAttendances = $attendances->keyBy(function($item) {
+            return \Carbon\Carbon::parse($item->date)->toDateString();
+        });
+
+        $prevMonth = Carbon::create($year, $month, 1)->subMonth();
+        $nextMonth = Carbon::create($year, $month, 1)->addMonth();
+
+        return view('users.attendances.index', compact(
+            'daysInMonth', 'organizedAttendances', 'year', 'month', 'prevMonth', 'nextMonth'
+        ));
     }
 
     /**
      * 勤怠詳細画面を表示
-     * 
-     * @param int $id
+     * * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $id)
     {
-        //ログインユーザーに紐づく勤怠記録のみを取得
-        $attendance = Attendance ::where('user_id', Auth::id())->findOrFail($id);
+        $user = Auth::user();
 
-        return view('users.attendances.show', compact('attendance'));
+    // 管理者の場合はAdminAttendanceControllerに処理を譲渡
+    if ($user && $user->is_admin) {
+        $adminController = app(AdminAttendanceController::class);
+        return $adminController->show($id);
     }
+
+    // 一般ユーザーの処理
+    $attendance = null;
+    $date = null;
+
+    try {
+        $date = Carbon::createFromFormat('Y-m-d', $id)->format('Y-m-d');
+    } catch (\Exception $e) {
+        $date = null;
+    }
+
+    if ($date) {
+        // 1. $id が日付形式の場合の処理
+        // ログインユーザーのその日の勤怠登録を取得
+        $attendance = $user->attendances()
+            ->with(['breaks', 'application'])
+            ->whereDate('date', $date)
+            ->first();
+    } else {
+        // 2. $id が勤怠IDであると判断された場合の処理
+        // ログインユーザーに紐づく勤怠をIDで取得
+        $attendance = $user->attendances()
+            ->with(['breaks', 'application'])
+            ->where('id', $id)
+            ->firstOrFail();
+        
+        $date = $attendance->date;
+    }
+
+    // 3. 勤怠情報が存在しない場合は、新規登録用に空のインスタンスを作成
+    if (!$attendance || ($date && !$attendance->exists)) {
+        // 未登録日を特定した場合は、新しいインスタンスを作成
+        $attendance = new Attendance([
+            'user_id' => $user->id,
+            'date' => $date
+        ]);
+    }
+
+    // blade側でエラーにならないように、リレーションを保証
+    if (!$attendance->relationLoaded('breaks') || !$attendance->breaks) {
+        $attendance->setRelation('breaks', collect());
+    }
+    if (!$attendance->relationLoaded('application') || !$attendance->application) {
+        $attendance->setRelation('application', null);
+    }
+
+    return view('users.attendances.show', compact('attendance', 'date', 'id'));
+    }
+
 
         /**
      * 勤怠記録を更新
-     * 
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * * @param \Illuminate\Http\Request $request
+     * @param string $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(AttendanceRequest $request, string $id)
     {
-        $attendance = Attendance::where('user_id', Auth::id())->findOrFail($id);
+        $user = Auth::user();
 
-        $request->validate([
-            'check_in_time' => 'nullable|date_format:H:i',
-            'check_out_time' => 'nullable|date_format:H:i|after:check_in_time',
-            'break_in_time_1' => 'nullable|date_format:H:i',
-            'break_out_time_1' => 'nullable|date_format:H:i|after:break_in_time_1',
-            'break_in_time_2' => 'nullable|date_format:H:i',
-            'break_out_time_2' => 'nullable|date_format:H:i|after:break_in_time_2|after:break_out_time_1',
-            'note' => 'nullable|string|max:255',
+        //管理者の場合はAdminAttendanceControllerに処理を譲渡
+        if ($user && $user->is_admin) {
+            $adminController = app(AdminAttendanceController::class);
+            return $adminController->update($request, $id); // AdminControllerに処理を委譲
+        }
+
+        //一般ユーザーの処理
+
+        // showメソッドと同様に、日付を特定
+        $targetDate = null;
+        $isDate = Carbon::createFromFormat('Y-m-d', $id);
+
+        if ($isDate !== false && $isDate->format('Y-m-d') === $id) {
+            $targetDate = $id;
+        } else {
+            // 勤怠IDから日付を取得
+            $attendance = $user->attendances()->where('id', $id)->firstOrFail();
+            $targetDate = $attendance->date;
+        }
+
+        // 勤怠レコードを firstOrCreate で取得または作成
+        $attendance = Attendance::firstOrCreate([
+            'user_id' => $user->id,
+            'date' => $targetDate, // 特定した日付を使用
         ]);
 
-        $checkin = $request->check_in_time ? Carbon::parse($attendance->date . ' ' . $request->check_in_time) : null;
-        $checkout = $request->check_out_time ? Carbon::parse($attendance->date . ' ' . $request->check_out_time) : null;
+        // 申請データ（フォームデータ＋勤怠ID）をJSON形式で準備
+        // Noteとbreaks情報を含むフォームデータを取得
+        $applicationDataToSave = $request->except(['_token', '_method']);
+        $applicationDataToSave['attendance_id'] = $attendance->id;
 
-        //休憩時間の合計を計算
-        $breakTimeTotal = 0;
-        if ($request->break_in_time_1 && $request->break_out_time_1) {
-            $break1_in = Carbon::parse($request->break_in_time_1);
-            $break1_out = Carbon::parse($request->break_out_time_1);
-            $breakTimeTotal += $break1_in->diffInMinutes($break1_out);
-        }
-        if ($request->break_in_time_2 && $request->break_out_time_2) {
-            $break2_in = Carbon::parse($request->break_in_time_2);
-            $break2_out = Carbon::parse($request->break_out_time_2);
-            $breakTimeTotal += $break2_in->diffInMinutes($break2_out);
+        // フォームから送られた時刻データをクリーンアップし、フォーマットを統一する関数
+    $cleanTime = function ($time) {
+        if (is_null($time) || $time === '' || $time === '0') {
+            return null;
         }
 
-        //労働時間の合計を計算
-        $totalTime = 0;
-        if ($checkin && $checkout) {
-            $totalTime = $checkin->diffInMinutes($checkout) - $breakTimeTotal;
-        }
+        //文字列であることを保証
+        $time = (string) $time;
 
-        $attendance->update([
-            'check_in_time' => $checkin,
-            'check_out_time' => $checkout,
-            'break_in_time_1' => $request->break_in_time_1,
-            'break_out_time_1' => $request->break_out_time_1,
-            'break_in_time_2' => $request->break_in_time_2,
-            'break_out_time_2' => $request->break_out_time_2,
-            'break_time'  => $breakTimeTotal,
-            'total_time' => $totalTime,
-            'note' => $request->note,
+        try {
+            return Carbon::createFromFormat('H:i', $time)->format('H:i');
+        } catch (Throwable $e) {
+            return null; // 不正な形式の場合はnullにする (データ破損防止)
+        }
+    };
+
+    // 1. 出勤・退勤時刻をクリーンアップ
+    $applicationDataToSave['check_in_time'] = $cleanTime($request->input('check_in_time'));
+    $applicationDataToSave['check_out_time'] = $cleanTime($request->input('check_out_time'));
+    
+    // 2. 休憩時刻をクリーンアップ
+    $breaks = $request->input('breaks', []);
+    foreach ($breaks as $index => $break) {
+        $breaks[$index]['break_in_time'] = $cleanTime($break['break_in_time'] ?? null);
+        $breaks[$index]['break_out_time'] = $cleanTime($break['break_out_time'] ?? null);
+    }
+    $applicationDataToSave['breaks'] = $breaks;
+
+        // 既存の申請レコードを検索するか、新規作成
+        $application = Application::firstOrNew([
+            'attendance_id' => $attendance->id,
         ]);
+        
+        // 申請内容を更新
+        $application->user_id = $user->id;
+        $application->attendance_id = $attendance->id;
+        $application->target_date = $targetDate;
+        $application->status = 1; // 承認待ちに設定
+        $application->reason = json_encode($applicationDataToSave); // JSON化して保存
+        
+        $application->save();
 
-        return redirect()->back()->with('status', '勤怠情報を修正しました。');
+        // 最新の申請情報をリロード
+        $attendance->load('application'); 
+
+    return redirect()->route('attendance.show', ['id' => $targetDate])->with('status', '勤怠情報を修正申請しました。');
+    }
+        /**
+     * Log the user out of the application.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

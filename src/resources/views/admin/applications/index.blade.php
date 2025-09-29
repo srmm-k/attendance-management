@@ -6,9 +6,18 @@
 
 @section('content')
 <div class="admin-requests-index__container">
-    <div class="admin-requests-index__heading">
-        <h2>申請一覧</h2>
-    </div>
+    <h2 class="admin-requests-index__heading">
+        申請一覧
+    </h2>
+
+    <ul>
+        <li class="nav-item">
+            <a class="nav-link {{request()->query('status') === 'pending' || !request()->query('status') ? 'active' : '' }}" href="{{ route('applications.index', ['status' => 'pending']) }}">承認待ち</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->query('status') === 'approved' ? 'active' : '' }}" href="{{ route('applications.index', ['status' => 'approved']) }}">承認済み</a>
+        </li>
+    </ul>
 
     @if (session('status'))
     <div class="alert alert-success">{{ session('status') }}</div>
@@ -20,32 +29,43 @@
         <table class="admin-requests-index__table">
             <thead>
                 <tr>
-                    <th class="admin-requests-index__label">申請者名</th>
-                    <th class="admin-requests-index__label">対象日付</th>
-                    <th class="admin-requests-index__label">申請理由</th>
-                    <th class="admin-requests-index__label">状態</th>
-                    <th class="admin-requests-index__label">申請日時</th>
-                    <th class="admin-requests-index__label">詳細</th>
+                    <th>状態</th>
+                    <th>名前</th>
+                    <th>対象日時</th>
+                    <th>申請理由</th>
+                    <th>申請日時</th>
+                    <th>詳細</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($applications as $application)
+                @forelse($applications as $application)
                 <tr>
-                    <td class="admin-requests-index__data">{{ $application->user->name }}</td>
-                    <td class="admin-requests-index__data">{{ $application->target_date }}</td>
-                    <td class="admin-requests-index__data">{{ Str::limit($application->reason, 50) }}</td>
-                    <td class="admin-requests-index__data">
-                        @if($application->status == 1) 承認待ち
-                        @elseif($application->status == 2) 承認済み
-                        @elseif($application->status == 3) 却下
+                    <td>
+                        @if ($application->status == 1)
+                            承認待ち
+                        @elseif ($application->status == 2)
+                            承認済み
+                        @else
+                            -
                         @endif
                     </td>
-                    <td class="admin-requests-index__data">{{ $application->created_at->format('Y-m-d H:i') }}</td>
-                    <td class="admin-requests-index__data">
-                        <a href="{{ route('admin.requests.detail', ['id' => $application->id]) }}" class="admin-requests-index__link">詳細</a>
+                    <td>{{ $application->user->name }}</td>
+                    <td>{{ \Carbon\Carbon::parse($application->target_date)->format('Y/m/d') }}</td>
+                    <td>{{ $application->reason ? json_decode($application->reason)->note : '備考なし'}}</td>
+                    <td>{{ \Carbon\Carbon::parse($application->created_at)->format('Y/m/d') }}</td>
+                    <td>
+                        @if ($application->attendance)
+                            <a href="{{ route('admin.requests.detail', ['attendance_correct_request' => $application->id]) }}" class="admin-requests-index__link">詳細</a>
+                        @else
+                            <span>勤怠情報なし</span>
+                        @endif
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center">該当する申請はありません。</td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
         <div class="admin-requests-index__pagination">

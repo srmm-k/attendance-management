@@ -11,7 +11,7 @@
         <h2>管理者ログイン</h2>
     </div>
 
-    <form class="login-form" action="{{ route('login') }}" method="POST">
+    <form class="login-form" action="{{ route('admin.login') }}" method="POST">
         @csrf
 
         <div class="form__group">

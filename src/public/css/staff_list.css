@@ -1,0 +1,78 @@
+body {
+    background-color: #f2f2f2;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.staff-list__container {
+    width: 100%;
+    width: 1000px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.staff-list__header-group {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-left: 0;
+    text-align: left;
+}
+
+.staff-list__heading {
+    border-left: 10px solid #333;
+    padding-left: 10px;
+    margin: 50px 0;
+    color: #333;
+    font-size: 25px;
+}
+
+.staff-list__table {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.staff-list__row {
+    border-bottom: 4px solid #ddd;
+}
+
+.staff-list__label {
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+}
+
+.staff-list__data-row {
+    border-bottom: 2px solid #ddd;
+}
+
+.staff-list__data-row:last-child {
+    border-bottom: none;
+}
+
+.staff-list__data {
+    padding: 15px 10px;
+    text-align: center;
+    color: #333;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.staff-list__data-row .staff-list__data:first-child {
+    text-align: left;
+    position: relative;
+    left: 60px;
+}
+
+.staff-list__link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+}

@@ -72,17 +72,3 @@
     color: #007bff;
     text-decoration: none;
 }
-
-/* --- PC (1400px - 1540px) 向けの調整 --- */
-@media (min-width: 1400px) and (max-width: 1540px) {
-    .login__heading {
-        font-size: 32px;
-    }
-
-    .form__group input,
-    .login-button {
-        padding: 15px;
-        font-size: 18px;
-        height: 50px;
-    }
-}

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
@@ -51,5 +53,28 @@ class LoginRequest extends FormRequest
             'email' => 'メールアドレス',
             'password' => 'パスワード',
         ];
+    }
+
+    /**
+     * Attempt to authenticate the request's credentials.
+     *
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function authenticate()
+    {
+        $user = Auth::guard('web')->attempt($this->only('email', 'password'));
+
+        if ($user && Auth::guard('web')->user()->is_admin) {
+            Auth::guard('web')->logout();
+            Auth::guard('admin')->attempt($this->only('email', 'password'));
+        }
+
+        if (! Auth::check()) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
     }
 }

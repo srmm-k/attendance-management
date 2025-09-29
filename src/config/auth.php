@@ -34,12 +34,15 @@ return [
     | Supported: "session"
     |
     */
-
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // 'admin' => [
+            // 'driver' => 'session',
+            // 'provider' => 'admins',
+        // ],
     ],
 
     /*
@@ -63,11 +66,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+            // 'where' => ['is_admin' => false],
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        // 'admins' => [
+            // 'driver' => 'eloquent',
+            // 'model' => App\Models\User::class,
+            // 'where' => ['is_admin' => true],
         // ],
     ],
 

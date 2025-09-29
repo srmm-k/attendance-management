@@ -8,7 +8,7 @@
 
 <div class="login-container">
     <div class="login__heading">
-        <h2>ログイン</h2>
+            <h2>ログイン</h2>
     </div>
 
     <form class="login-form" action="{{ route('login') }}" method="POST" novalidate>

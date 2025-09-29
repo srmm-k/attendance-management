@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -18,7 +19,7 @@ class UserSeeder extends Seeder
         User::factory()->admin()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('admin000'),
         ]);
 
         //一般ユーザーを１０人作成（パスワードは全て「password」）

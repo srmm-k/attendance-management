@@ -1,0 +1,107 @@
+body {
+    background-color: #f0f2f5;
+}
+
+.admin-attendance-list__container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.admin-attendance-list__header-group {
+    width: 100%;
+    margin-bottom: 20px;
+    padding-left: 0;
+    text-align: left;
+}
+
+.admin-attendance-list__heading {
+    border-left: solid 10px #333;
+    padding-left: 10px;
+    margin-top: 80px;
+    color: #333;
+    font-size: 25px;
+}
+
+.admin-attendance-list__card {
+    width: 100%;
+}
+
+.admin-attendance-list__day-navigation {
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 70px;
+    padding: 10px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.admin-attendance-list__nav-link {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.admin-attendance-list__current-day {
+    font-size: 1.3em;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-attendance-list__table {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.admin-attendance-list__row {
+    border-bottom: 4px solid #ddd;
+}
+
+.admin-attendance-list__label {
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+}
+
+.admin-attendance-list__data-row {
+    border-bottom: 2px solid #ddd;
+}
+
+.admin-attendance-list__data-row:last-child {
+    border-bottom: none;
+}
+
+.admin-attendance-list__data {
+    padding: 15px 10px;
+    text-align: center;
+    color: #333;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.admin-attendance-list__link {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px;
+}

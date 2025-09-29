@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Requests\Pipeline;
+
+use App\Http\Requests\LoginRequest;
+use Closure;
+use Illuminate\Http\Request;
+
+class ValidateLoginRequest
+{
+    public function handle(Request $request, Closure $next)
+    {
+        // LoginRequestのバリデーションを実行
+        app(LoginRequest::class);
+
+        return $next($request);
+    }
+}
