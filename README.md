@@ -4,12 +4,17 @@ coachtech勤怠管理アプリ
 
 環境構築
 
-Dockerビルド  
-【コマンドライン上】  
-・ git clone git@gtihub.com:coachtech-material/laravel-docker-template.git  
-・ mv laravel-docker-template attendance-management  
-・ cd attendance-management  
-・ docker-compose up -d --build (docker-compose.yml,nginx,php(dockerfile),mysqlを適宜変更)  
+Dockerビルド　　
+
+【コマンドライン上】　　
+
+・ git clone git@gtihub.com:coachtech-material/laravel-docker-template.git
+
+・ mv laravel-docker-template attendance-management
+
+・ cd attendance-management
+
+・ docker-compose up -d --build (docker-compose.yml,nginx,php(dockerfile),mysqlを適宜変更)
 
 Laravel環境構築  
 
