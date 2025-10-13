@@ -22,16 +22,18 @@ Laravel環境構築
 ・ composer install  
 ・ composer -v  
 ・ cp .env.example .env,環境変数を適宜変更  
+・ php artisan key:generate APP_KEYにランダムなキーを作成
 ・ php artisan make:command MakeBladeCommand,blade.phpのテンプレート作成  
 ・ php artisan make:blade register ...各必要なviewの作成  
 ・ php artisan make:controller AttendanceController ...各必要なcontrollerを作成（アッパーキャメル）  
 ・ php artisan make:model Application ...各必要なmodelを作成（アッパーキャメル）  
-・ php artisan make:migration create_attendance_table ...各必要なtableを作成（スネークケース）  
 ・ php artisan make:request LoginRequest ...各必要なRequestを作成（アッパーキャメル）  
+・ php artisan make:migration create_attendance_table ...各必要なtableを作成（スネークケース）  
 ・ マイグレーションファイル編集後、php artisan migrate　実行  
 ・ php artisan make:seeder AttendanceTablesSeeder ...各必要なSeederを作成（アッパーキャメル）  
 ・ ダミーデータの作成  
 ・ php artisan db:seed 実行  
+・ php artisan test
 
 URL  
 ・開発環境：http://localhost/  
