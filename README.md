@@ -22,7 +22,7 @@ Laravel環境構築
 ・ composer install  
 ・ composer -v  
 ・ cp .env.example .env,環境変数を適宜変更  
-・ php artisan key:generate APP_KEYにランダムなキーを作成
+・ php artisan key:generate APP_KEYにランダムなキーを作成  
 ・ php artisan make:command MakeBladeCommand,blade.phpのテンプレート作成  
 ・ php artisan make:blade register ...各必要なviewの作成  
 ・ php artisan make:controller AttendanceController ...各必要なcontrollerを作成（アッパーキャメル）  
