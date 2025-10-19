@@ -25,10 +25,10 @@
         <table class="admin-attendance-list__table">
             <tr class="admin-attendance-list__row">
                 <th class="admin-attendance-list__label">名前</th>
-                <th class="admin-attendance-list__label">出勤時間</th>
-                <th class="admin-attendance-list__label">退勤時間</th>
-                <th class="admin-attendance-list__label">休憩時間</th>
-                <th class="admin-attendance-list__label">合計時間</th>
+                <th class="admin-attendance-list__label">出勤</th>
+                <th class="admin-attendance-list__label">退勤</th>
+                <th class="admin-attendance-list__label">休憩</th>
+                <th class="admin-attendance-list__label">合計</th>
                 <th class="admin-attendance-list__label">詳細</th>
             </tr>
             @foreach($attendances as $attendance)
