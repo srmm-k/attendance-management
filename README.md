@@ -8,9 +8,7 @@ Dockerビルド　　
 
 【コマンドライン上】　　
 
-・ git clone git@gtihub.com:coachtech-material/laravel-docker-template.git
-
-・ mv laravel-docker-template attendance-management
+・ git clone git@gtihub.com:attendance-management.git
 
 ・ cd attendance-management
 
